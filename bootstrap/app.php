@@ -26,4 +26,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.api' => \App\Http\Middleware\AuthApi::class,
         ]);
-    })->create();
+    })
+    ->withMiddleware(function (Middleware $middleware): void {
+    $middleware->validateCsrfTokens(except: [
+        'stripe/*',
+        'http://example.com/foo/bar',
+        'http://localhost/api/v1/*',
+    ]);
+})->create();

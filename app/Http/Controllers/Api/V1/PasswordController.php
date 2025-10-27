@@ -14,6 +14,32 @@ use Carbon\Carbon;
 class PasswordController extends Controller
 {
     // Шаг 1: Запрос сброса пароля (отправка токена)
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/password/forgot",
+     *     tags={"Authentication"},
+     *     summary="Создать токен для сброса пароля",
+     *     description="Генерирует токен для сброса пароля и возвращает его (в тестовых целях).",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email"},
+     *             @OA\Property(property="email", type="string", example="user@example.com")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ссылка для сброса пароля создана",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ссылка для сброса пароля успешно создана."),
+     *             @OA\Property(property="token", type="string", example="abc123")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Неверные данные"),
+     *     @OA\Response(response=404, description="Пользователь не найден")
+     * )
+     */
+
     public function forgot(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -42,6 +68,27 @@ class PasswordController extends Controller
     }
 
     // Шаг 2: Проверка токена
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/password/token-check",
+     *     tags={"Authentication"},
+     *     summary="Проверить токен сброса пароля",
+     *     description="Проверяет, действителен ли токен, созданный для сброса пароля.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","token"},
+     *             @OA\Property(property="email", type="string", example="user@example.com"),
+     *             @OA\Property(property="token", type="string", example="abc123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Токен действителен"),
+     *     @OA\Response(response=400, description="Неверный или истёкший токен"),
+     *     @OA\Response(response=404, description="Запрос не найден"),
+     *     @OA\Response(response=422, description="Ошибка валидации")
+     * )
+     */
+
     public function tokenCheck(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -72,6 +119,28 @@ class PasswordController extends Controller
     }
 
     // Шаг 3: Сброс пароля
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/password/reset",
+     *     tags={"Authentication"},
+     *     summary="Сбросить пароль пользователя",
+     *     description="Позволяет задать новый пароль при наличии действительного токена.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","token","password","password_confirmation"},
+     *             @OA\Property(property="email", type="string", example="user@example.com"),
+     *             @OA\Property(property="token", type="string", example="abc123"),
+     *             @OA\Property(property="password", type="string", example="newPassword123"),
+     *             @OA\Property(property="password_confirmation", type="string", example="newPassword123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Пароль успешно обновлён"),
+     *     @OA\Response(response=400, description="Неверный токен или email"),
+     *     @OA\Response(response=422, description="Ошибка валидации")
+     * )
+     */
+
     public function reset(Request $request)
     {
         $validator = Validator::make($request->all(), [

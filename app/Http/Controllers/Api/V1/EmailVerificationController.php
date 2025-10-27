@@ -15,6 +15,32 @@ class EmailVerificationController extends Controller
 {
     // 📤 POST /api/v1/auth/email-verify/{user}
     // Отправка ссылки подтверждения email
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/email-verify/{user}",
+     *     tags={"Authentication"},
+     *     summary="Отправить ссылку для подтверждения email",
+     *     description="Создает токен и возвращает ссылку для подтверждения email указанного пользователя.",
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         required=true,
+     *         description="ID пользователя",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ссылка создана успешно",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ссылка для подтверждения email создана."),
+     *             @OA\Property(property="verify_url", type="string", example="http://localhost/api/v1/auth/email-verify?user=1&token=abc123")
+     *         )
+     *     ),
+     *     @OA\Response(response=400, description="Email уже подтверждён"),
+     *     @OA\Response(response=404, description="Пользователь не найден")
+     * )
+     */
+
     public function sendLink(Request $request, User $user)
     {
         if ($user->email_verified_at) {
@@ -44,6 +70,27 @@ class EmailVerificationController extends Controller
 
     // ✅ POST /api/v1/auth/email-verify
     // Подтверждение email по токену
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/email-verify",
+     *     tags={"Authentication"},
+     *     summary="Подтвердить email по токену",
+     *     description="Проверяет токен подтверждения email и устанавливает дату верификации.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"user","token"},
+     *             @OA\Property(property="user", type="integer", example=1, description="ID пользователя"),
+     *             @OA\Property(property="token", type="string", example="abc123", description="Токен подтверждения email")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Email успешно подтверждён"),
+     *     @OA\Response(response=400, description="Неверный или истёкший токен"),
+     *     @OA\Response(response=404, description="Запрос подтверждения не найден"),
+     *     @OA\Response(response=422, description="Ошибка валидации")
+     * )
+     */
+
     public function verify(Request $request)
     {
         $validator = Validator::make($request->all(), [

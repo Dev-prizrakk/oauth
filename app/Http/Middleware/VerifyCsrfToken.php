@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'api/v1/auth/*', // все маршруты API без CSRF
+        'http://localhost/api/v1/*'
     ];
 }
