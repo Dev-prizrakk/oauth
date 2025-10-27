@@ -1,35 +1,31 @@
 <?php
 // Base
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\PasswordController;
-use App\Http\Controllers\Api\V1\EmailVerificationController;
-
+use App\Http\Controllers\Frontend\AuthPageController;
+use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\EmailVerificationFrontendController;
 
 // Главная страница
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
+// Авторизация
+Route::get('/auth', [AuthPageController::class, 'index'])->name('auth.page');
+Route::post('/auth/login', [AuthPageController::class, 'login'])->name('auth.login');
+Route::post('/auth/logout', [AuthPageController::class, 'logout'])->name('auth.logout');
 
-// API Маршруты версии 1 (аутентификация, пароль, подтверждение email)
-Route::prefix('/api/v1/auth')->group(function () {
-    // Аутентификация
-    Route::post('/registration', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+// Регистрация
+Route::get('/register', [AuthPageController::class, 'registerForm'])->name('auth.register.page');
+Route::post('/register', [AuthPageController::class, 'register'])->name('auth.register');
 
-    // Маршруты, требующие авторизации
-    Route::middleware('auth.api')->group(function () {
-        Route::delete('/logout', [AuthController::class, 'logout']);
-        Route::get('/me', [AuthController::class, 'me']);
-    });
+// Профиль (только для авторизованных)
+Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile');
 
-    // Работа с паролем
-    Route::post('/password/forgot', [PasswordController::class, 'forgot']);
-    Route::post('/password/reset', [PasswordController::class, 'reset']);
-    Route::post('/password/token-check', [PasswordController::class, 'tokenCheck']);
 
-    // Подтверждение email
-    Route::post('/email-verify/{user}', [EmailVerificationController::class, 'sendLink']);
-    Route::post('/email-verify', [EmailVerificationController::class, 'verify']);
-});
+Route::post('/profile/email/send', [EmailVerificationFrontendController::class, 'send'])->name('email.send')->middleware('auth');
+Route::post('/profile/email-verify', [EmailVerificationFrontendController::class, 'verify'])
+    ->middleware('auth')
+    ->name('email.verify.frontend');
+
+
