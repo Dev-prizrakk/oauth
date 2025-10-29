@@ -19,7 +19,15 @@
 <p><strong>Email:</strong> {{ $user->email }}</p>
 <p><strong>Подтвержден:</strong> {{ $user->email_verified_at ? 'Да' : 'Нет' }}</p>
 
-<form method="POST" action="{{ route('auth.logout') }}" style="margin-top: 20px; text-align: center;">
+{{-- 🔹 Если пользователь вошёл, но забыл пароль --}}
+<div style="margin-top: 20px; text-align: center;">
+    <p style="color: #555;">Забыли пароль? Вы можете сбросить его:</p>
+    <a href="{{ route('auth.forgot') }}" style="display: inline-block; padding: 10px 15px; background: #e67e22; color: #fff; border-radius: 5px; text-decoration: none;">
+        Сбросить пароль
+    </a>
+</div>
+
+<form method="POST" action="{{ route('auth.logout') }}" style="margin-top: 30px; text-align: center;">
     @csrf
     <button type="submit" style="padding: 10px 20px; background: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
         Выйти

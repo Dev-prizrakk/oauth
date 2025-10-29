@@ -15,6 +15,10 @@ Route::get('/auth', [AuthPageController::class, 'index'])->name('auth.page');
 Route::post('/auth/login', [AuthPageController::class, 'login'])->name('auth.login');
 Route::post('/auth/logout', [AuthPageController::class, 'logout'])->name('auth.logout');
 
+// Восстановление пароля
+Route::view('/auth/forgot', 'auth.forgot')->name('auth.forgot');
+Route::view('/auth/reset', 'auth.reset')->name('auth.reset');
+
 // Регистрация
 Route::get('/register', [AuthPageController::class, 'registerForm'])->name('auth.register.page');
 Route::post('/register', [AuthPageController::class, 'register'])->name('auth.register');
