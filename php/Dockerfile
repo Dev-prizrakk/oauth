@@ -12,6 +12,10 @@ WORKDIR /var/www/html
 
 # права (опционально)
 RUN useradd -G www-data,root -u 1000 -d /home/appuser appuser
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN chmod -R 755 storage bootstrap/cache \
+    && chown -R appuser:www-data storage bootstrap/cache
+RUN php artisan migrate --force || true
 
 EXPOSE 9000
 CMD ["php-fpm", "-F", "-R"]
