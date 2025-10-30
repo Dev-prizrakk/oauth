@@ -1,17 +1,8 @@
-# Webtense - Прототип сайта для производственной практики
-Это прототип сайта для производственной практики, разработанный с использованием Laravel и Docker. В проекте реализована базовая аутентификация пользователей с возможностью регистрации, входа, выхода, восстановления пароля и верификации email.
-## Технологии
-- PHP 8.x
-- Laravel 11.x
-- Docker и Docker Compose
-- MySQL
-- Swagger (для документации API)
-## API Документация
-Документация по API доступна по адресу: `http://localhost/api/v1/docs`
+# Oauth - Система авторизации от новичка
 
 ### Endpoint
-
-| Endpoint | Метод | Описание (опционально) |
+## Auth
+| Endpoint | Метод | Описание |
 |----------|--------|------------------------|
 | /api/v1/auth/email-verify/{user} | POST | отправка ссылки для верификации |
 | /api/v1/auth/email-verify | POST | подтверждение верификации |
@@ -23,14 +14,26 @@
 | /api/v1/auth/password/reset | POST | сброс пароля |
 | /api/v1/auth/password/token-check | POST | проверка токена восстановления |
 
-### Ошибки
-- По какой-то причине докер медлено работает из-за чего на API сайта 419 Page Expiried
-- Функционал не тестирован
+## Blog
+| Endpoint | Метод | Описание |
+|----------|-------|----------|
+| /api/v1/blog/posts | GET | Получить список всех постов блога |
+| /api/v1/blog/posts | POST | Создать новый поста |
+| /api/v1/blog/posts/{id} | GET | Получить пост по ID поста |
+| /api/v1/blog/posts/{id} | DELETE | Удалить пост по ID поста |
+## Requests
+| Endpoint | Метод | Описание |
+|----------|-------|----------|
+| /api/v1/requests | GET | Создание заявки |
+| /api/v1/requests | POST | Создать новую заявку |
+| /api/v1/requests/{id} | GET | Получить заявку по ID заявки |
+| /api/v1/requests/{id} | DELETE | Удалить заявку по ID заявки |
+
 ## Инструкция по установке
 
 1. Клонируйте репозиторий:
    ```bash
-    git clone https://github.com/Dev-prizrakk/webtetnse.ru.git
+    git clone https://github.com/Dev-prizrakk/oauth.git
     cd webtetnse.ru
     ```
 2. Поднять докер контейнеры:
@@ -63,3 +66,4 @@
    ```
    http://localhost/api/v1/docs
    ```
+
