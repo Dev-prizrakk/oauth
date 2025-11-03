@@ -14,21 +14,6 @@
 | /api/v1/auth/password/reset | POST | сброс пароля |
 | /api/v1/auth/password/token-check | POST | проверка токена восстановления |
 
-## Blog
-| Endpoint | Метод | Описание |
-|----------|-------|----------|
-| /api/v1/blog/posts | GET | Получить список всех постов блога |
-| /api/v1/blog/posts | POST | Создать новый поста |
-| /api/v1/blog/posts/{id} | GET | Получить пост по ID поста |
-| /api/v1/blog/posts/{id} | DELETE | Удалить пост по ID поста |
-## Requests
-| Endpoint | Метод | Описание |
-|----------|-------|----------|
-| /api/v1/requests | GET | Создание заявки |
-| /api/v1/requests | POST | Создать новую заявку |
-| /api/v1/requests/{id} | GET | Получить заявку по ID заявки |
-| /api/v1/requests/{id} | DELETE | Удалить заявку по ID заявки |
-
 ## Инструкция по установке
 
 1. Клонируйте репозиторий:
